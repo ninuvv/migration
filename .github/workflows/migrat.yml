@@ -7,7 +7,7 @@ jobs:
 
     runs-on: ubuntu-latest
     env:
-      PGHOST: 127.0.0.1
+      PGHOST: localhost
       PGPORT: 5432
       PGUSER: onito_inv_user
       PGPASSWORD: abcd
@@ -26,9 +26,9 @@ jobs:
       - name: Postgres Dump Backup
         uses: tj-actions/pg-dump@v2.3
         with:
-          database_url: "postgres://onito_inv_user:abcd@127.0.0.1:5432/Inventory"
+          database_url: "postgres://onito_inv_user:abcd@localhost:5432/Inventory"
           path: "backups/backup.sql" 
           options: "-O"  
-          
+
 
                  
