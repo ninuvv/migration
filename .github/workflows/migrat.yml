@@ -25,7 +25,6 @@ jobs:
             export PGHOST=127.0.0.1
             export PGPORT=5432
             export PGUSER=onito_inv_user
-            export PGPASSWORD=12345
             pg_dump -Fc Inventory > backup_file.dump
         
         
