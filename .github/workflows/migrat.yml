@@ -26,5 +26,6 @@ jobs:
             export PGPORT=5432
             export PGUSER=onito_inv_user
             pg_dump -Fc Inventory > backup_file.dump
+            
         
         
