@@ -26,7 +26,7 @@ jobs:
       - name: Postgres Dump Backup
         uses: tj-actions/pg-dump@v2.3
         with:
-          database_url: "postgres://onito_inv_user:12345@localhost:5432/Inventory"
+          database_url: "postgres://onito_inv_user:abcd@localhost:5432/Inventory"
           path: "backups/backup.sql" 
           options: "-O"  
 
