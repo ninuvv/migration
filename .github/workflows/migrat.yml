@@ -29,19 +29,3 @@ jobs:
             pg_dump -Fc Inventory > backup_file.dump
         
         
-        - name: Create New Database
-          run: createdb -h localhost -U onito_inv_user -T template0 new_Inventory
-        
-        - name: Restore Backup to New Database
-          run: |
-                  export PGHOST=localhost
-                  export PGPORT=5432
-                  export PGUSER=onito_inv_user
-                  export PGPASSWORD=12345
-                  pg_restore -h localhost -U onito_inv_user -d new_Inventory backup_file.dump
-
-        - name: Run Database Migrations
-          run: |
-            export DATABASE_URL="postgresql://onito_inv_user:12345@localhost:5432/new_Inventory?sslmode=disable"    
-            migrate -path db/migrations -database "$DATABASE_URL" up
-          
