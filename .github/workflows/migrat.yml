@@ -20,13 +20,12 @@ jobs:
         - name: Set up PostgreSQL client
           run: sudo apt-get install postgresql-client
 
-        - name: Install migrate
-          run: go get -u -v github.com/golang-migrate/migrate/v4/cmd/migrate
+
 
         - name: Create Backup
           run: |
-              export PGHOST= localhost
-              export PGPORT= 5432
+              export export PGHOST=localhost
+              export PGPORT=5432
               export PGUSER=onito_inv_user
               export PGPASSWORD=12345
               pg_dump -Fc Inventory > backup_file.dump
@@ -36,8 +35,8 @@ jobs:
         
         - name: Restore Backup to New Database
           run: |
-                  export PGHOST= localhost
-                  export PGPORT= 5432
+                  export PGHOST=localhost
+                  export PGPORT=5432
                   export PGUSER=onito_inv_user
                   export PGPASSWORD=12345
                   pg_restore -h localhost -U onito_inv_user -d new_Inventory backup_file.dump
