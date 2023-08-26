@@ -1,0 +1,51 @@
+name: Migrate Go package
+
+on:
+  push:
+    branches: [ "master"]
+  pull_request:
+    branches: [ "master"]
+
+jobs:
+  migrate:
+
+    runs-on: ubuntu-latest
+    env:    
+      GH_ACCESS_TOKEN: ${{secrets.SAGARWAL_PRIVREPOACCESSTOKEN_FOR_INVENTORY_MIGRATIONS_CICD_TESTING}}      
+     
+    steps:
+        - uses: actions/checkout@v3
+  
+        - name: Set up Go
+          uses: actions/setup-go@v4
+          with:
+            go-version: 1.18
+ 
+        - name: Set up PostgreSQL client
+          run: sudo apt-get install postgresql-client
+
+        - name: Install migrate
+          run: go get -u -v github.com/golang-migrate/migrate/v4/cmd/migrate
+
+        - name: Create Backup
+          run: |
+              export PGHOST=localhost
+              export PGUSER=onito_inv_user
+              export PGPASSWORD=12345
+              pg_dump -Fc Inventory > backup_file.dump
+        
+        - name: Create New Database
+          run: createdb -h localhost -U onito_inv_user -T template0 new_Inventory
+        
+        - name: Restore Backup to New Database
+          run: |
+                  export PGHOST=localhost
+                  export PGUSER=onito_inv_user
+                  export PGPASSWORD=12345
+                  pg_restore -h localhost -U onito_inv_user -d new_Inventory backup_file.dump
+
+        - name: Run Database Migrations
+          run: |
+            export DATABASE_URL="postgresql://onito_inv_user:12345@localhost:5432/new_Inventory?sslmode=disable"    
+            migrate -path db/migrations -database "$DATABASE_URL" up
+          
