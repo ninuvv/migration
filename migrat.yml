@@ -1,10 +1,6 @@
 name: Migrate Go package
 
-on:
-  push:
-    branches: [ "master"]
-  pull_request:
-    branches: [ "master"]
+on: [push]
 
 jobs:
   migrate:
