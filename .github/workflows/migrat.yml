@@ -6,23 +6,25 @@ jobs:
   migrate:
 
     runs-on: ubuntu-latest
+    env:
+      PGHOST: localhost
+      PGPORT: 5432
+      PGUSER: onito_inv_user
+      PGPASSWORD: 12345
+      PGDATABASE: Inventory
     steps:
-        - uses: actions/checkout@v3
+      - uses: actions/checkout@v3
   
-        - name: Set up Go
-          uses: actions/setup-go@v4
-          with:
-            go-version: 1.18
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: 1.18
  
-        - name: Set up PostgreSQL client
-          run: sudo apt-get install postgresql-client
+      - name: Set up PostgreSQL client
+        run: sudo apt-get install postgresql-client
 
-        - name: Create Backup
-          run: |
-            export PGHOST=127.0.0.1
-            export PGPORT=5432
-            export PGUSER=onito_inv_user
-            export PGPASSWORD='12345'
-            pg_dump -Fc Inventory > backup_file.dump
-            
+      - name: Create Backup
+        run: |
+          pg_dump -h $PGHOST -p $PGPORT -U $PGUSER -d $PGDATABASE -Fc > backup_file.dump
+
                  
