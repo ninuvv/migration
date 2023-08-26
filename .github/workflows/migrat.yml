@@ -23,8 +23,11 @@ jobs:
       - name: Set up PostgreSQL client
         run: sudo apt-get install postgresql-client
 
-      - name: Create Backup
-        run: |
-          pg_dump -h $PGHOST -p $PGPORT -U $PGUSER -d $PGDATABASE -Fc > backup_file.dump
+      - name: Postgres Dump Backup
+        uses: tj-actions/pg-dump@v2.3
+        with:
+          database_url: "postgres://onito_inv_user:12345@localhost:5432/Inventory"
+          path: "backups/backup.sql" 
+          options: "-O"  
 
                  
