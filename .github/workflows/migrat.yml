@@ -9,8 +9,8 @@ jobs:
     env:
       PGHOST: localhost
       PGPORT: 5432
-      PGUSER: Lenovo
-      PGPASSWORD: Dhanyam123
+      PGUSER: postgres
+      PGPASSWORD: 12345
       PGDATABASE: Inventory
     steps:
       - uses: actions/checkout@v3
@@ -26,10 +26,9 @@ jobs:
       - name: Postgres Dump Backup
         uses: tj-actions/pg-dump@v2.3
         with:
-          database_url: "postgres://Lenovo:Dhanyam123@localhost:5432/Inventory"
+          database_url: "postgres://postgres:12345@localhost:5432/Inventory"
           path: "backups/backup.sql" 
           options: "-O"  
-          
           
 
 
