@@ -20,15 +20,14 @@ jobs:
         - name: Set up PostgreSQL client
           run: sudo apt-get install postgresql-client
 
-
-
         - name: Create Backup
           run: |
-              export export PGHOST=127.0.0.1
-              export PGPORT=5432
-              export PGUSER=onito_inv_user
-              export PGPASSWORD=12345
-              pg_dump -Fc Inventory > backup_file.dump
+            export PGHOST=127.0.0.1
+            export PGPORT=5432
+            export PGUSER=onito_inv_user
+            export PGPASSWORD=12345
+            pg_dump -Fc Inventory > backup_file.dump
+        
         
         - name: Create New Database
           run: createdb -h localhost -U onito_inv_user -T template0 new_Inventory
