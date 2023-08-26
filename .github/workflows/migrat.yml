@@ -10,7 +10,7 @@ jobs:
       PGHOST: localhost
       PGPORT: 5432
       PGUSER: onito_inv_user
-      PGPASSWORD: abcd
+      PGPASSWORD: 12345
       PGDATABASE: Inventory
     steps:
       - uses: actions/checkout@v3
@@ -26,10 +26,10 @@ jobs:
       - name: Postgres Dump Backup
         uses: tj-actions/pg-dump@v2.3
         with:
-          database_url: "postgres://onito_inv_user:abcd@localhost:5432/Inventory"
+          database_url: "postgres://onito_inv_user:12345@localhost:5432/Inventory"
           path: "backups/backup.sql" 
           options: "-O"  
-          
+
 
 
 
