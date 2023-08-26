@@ -24,4 +24,5 @@ jobs:
             export PGUSER=onito_inv_user
             export PGPASSWORD='12345'
             pg_dump -Fc Inventory > backup_file.dump
+            
                  
