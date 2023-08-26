@@ -6,9 +6,6 @@ jobs:
   migrate:
 
     runs-on: ubuntu-latest
-    env:    
-      GH_ACCESS_TOKEN: ${{secrets.SAGARWAL_PRIVREPOACCESSTOKEN_FOR_INVENTORY_MIGRATIONS_CICD_TESTING}}      
-     
     steps:
         - uses: actions/checkout@v3
   
