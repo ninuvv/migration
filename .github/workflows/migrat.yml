@@ -29,9 +29,10 @@ jobs:
           database_url: "postgres://onito_inv_user:abcd@localhost:5432/Inventory"
           path: "backups/backup.sql" 
           options: "-O"  
-
-
-
-
           
+
+
+
+
+
               
