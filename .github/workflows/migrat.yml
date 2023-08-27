@@ -26,7 +26,7 @@ jobs:
         env:
          PGPASSWORD: 12345
         run: |
-          psql -h 127.0.0.1 -p 5432 -U postgres -d Inventory -c "UPDATE pg_database SET datistemplate = true WHERE datname = 'Inventory';"
+          psql -h 127.0.0.1 -p 5432 -U postgres -d Inventory -w -c "UPDATE pg_database SET datistemplate = true WHERE datname = 'Inventory';"
 
       - name: Create Temporary Database
         run: |
