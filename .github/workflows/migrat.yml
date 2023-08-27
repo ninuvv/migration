@@ -53,12 +53,16 @@ jobs:
 
 
       - name: Get Current DB Version
+        env:
+         PGPASSWORD: 12345
         id: get_db_version
         run: |
           current_version=$(migrate -database "postgres://postgres@127.0.0.1:5432/temp_inventory?sslmode=disable" -path ./db/migrations version)
           echo "::set-output name=current_version::$current_version"
 
       - name: Run Migrations
+        env:
+         PGPASSWORD: 12345
         run: |
           current_version="${{ steps.get_db_version.outputs.current_version }}"
           migrate -database "postgres://postgres@127.0.0.1:5432/temp_inventory?sslmode=disable" -path ./db/migrations goto "$current_version"
