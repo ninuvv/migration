@@ -8,6 +8,7 @@ on:
 jobs:
   migrate_db:
     runs-on: ubuntu-latest
+
     services:
       postgres:
         image: postgres:12
@@ -58,5 +59,11 @@ jobs:
         run: |         
           migrate -database "postgres://postgres@127.0.0.1:5432/temp_inventory?sslmode=disable" -path ./db/migrations up
 
-          
+      - name: Set Database as Template
+        env:
+         PGPASSWORD: 12345
+        run: |
+          psql -h 127.0.0.1 -p 5432 -U postgres -d Inventory -w -c "UPDATE pg_database SET datistemplate = false WHERE datname = 'Inventory';"
+
+     
 
