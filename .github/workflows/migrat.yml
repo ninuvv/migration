@@ -45,7 +45,7 @@ jobs:
           PGPASSWORD: 12345
         run: |
 
-          psql -h 127.0.0.1 -p 5432 -U postgres  -d Inventorynew -w -c "CREATE DATABASE temp_inventory OWNER postgres TEMPLATE 'Inventorynew';"
+          psql -h 127.0.0.1 -p 5432 -U postgres  -d Inventorynew -w -c "CREATE DATABASE 'temp_inventory' OWNER postgres TEMPLATE 'Inventorynew';"
 
 
       - name: Run Migrations
