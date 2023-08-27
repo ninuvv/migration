@@ -26,22 +26,22 @@ jobs:
         env:
          PGPASSWORD: 12345
         run: |
-          psql -h localhost -p 5432 -U postgres -c "UPDATE pg_database SET datistemplate = true WHERE datname = 'Inventory';"
+          psql -h ::1 -p 5432 -U postgres -c "UPDATE pg_database SET datistemplate = true WHERE datname = 'Inventory';"
 
       - name: Create Temporary Database
         run: |
           # Create a temporary database using the template option        
-          psql -h localhost -p 5432 -U postgres -c "CREATE DATABASE temp_inventory OWNER postgres TEMPLATE 'Inventory';"
+          psql -h ::1 -p 5432 -U postgres -c "CREATE DATABASE temp_inventory OWNER postgres TEMPLATE 'Inventory';"
 
 
       - name: Get Current DB Version
         id: get_db_version
         run: |
-          current_version=$(migrate -database "postgres://postgres@localhost:5432/temp_inventory?sslmode=disable" -path ./db/migrations version)
+          current_version=$(migrate -database "postgres://postgres@::1:5432/temp_inventory?sslmode=disable" -path ./db/migrations version)
           echo "::set-output name=current_version::$current_version"
 
       - name: Run Migrations
         run: |
           current_version="${{ steps.get_db_version.outputs.current_version }}"
-          migrate -database "postgres://postgres@localhost:5432/temp_inventory?sslmode=disable" -path ./db/migrations goto "$current_version"
-          migrate -database "postgres://postgres@localhost:5432/temp_inventory?sslmode=disable" -path ./db/migrations up
+          migrate -database "postgres://postgres@::1:5432/temp_inventory?sslmode=disable" -path ./db/migrations goto "$current_version"
+          migrate -database "postgres://postgres@::1:5432/temp_inventory?sslmode=disable" -path ./db/migrations up
