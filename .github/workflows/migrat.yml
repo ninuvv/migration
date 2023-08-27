@@ -8,8 +8,6 @@ on:
 jobs:
   migrate_db:
     runs-on: ubuntu-latest
-    env:
-      PGPASSWORD: 12345
   
     steps:
       - name: Checkout Repository
@@ -25,6 +23,8 @@ jobs:
           go install -tags 'postgres' github.com/golang-migrate/migrate/v4/cmd/migrate@latest
 
       - name: Set Database as Template
+        env:
+         PGPASSWORD: 12345
         run: |
           psql -h 127.0.0.1 -p 5432 -U postgres -d Inventory -W -c "UPDATE pg_database SET datistemplate = true WHERE datname = 'Inventory';"
 
