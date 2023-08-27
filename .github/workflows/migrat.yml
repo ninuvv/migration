@@ -1,48 +1,40 @@
-name: Migrate Go package
+name: Migrate PostgreSQL Database
 
-on: [push]
+on:
+  push:
+    branches:
+      - main  # Change this to your desired branch
 
 jobs:
-  migrate:
-
+  migrate_db:
     runs-on: ubuntu-latest
-    env:
-      PGHOST: localhost
-      PGPORT: 5432
-      PGUSER: postgres
-      PGPASSWORD: 12345
-      PGDATABASE: Inventory
+
     steps:
-      - uses: actions/checkout@v3
-  
-      - name: Set up Go
-        uses: actions/setup-go@v4
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Set Up Go
+        uses: actions/setup-go@v2
         with:
-          go-version: 1.18
- 
-      - name: Set up PostgreSQL client
-        run: sudo apt-get install postgresql-client
+          go-version: 1.18  
 
-      - name: Postgres Dump Backup
-        uses: tj-actions/pg-dump@v2.3
-        with:
-          database_url: "postgres://postgres:12345@localhost:5432/Inventory"
-          path: "backups/backup.sql" 
-          options: "-O" 
+      - name: Install Golang Migrate
+        run: |
+          go install -tags 'postgres' github.com/golang-migrate/migrate/v4/cmd/migrate@latest
 
+      - name: Create Temporary Database
+        run: |
+          # Create a temporary database using the template option
+          createdb -h localhost -p 5432 -U postgres -T Inventory temp_inventory
 
+      - name: Get Current DB Version
+        id: get_db_version
+        run: |
+          current_version=$(migrate -database "postgres://postgres@localhost:5432/temp_inventory?sslmode=disable" -path ./db/migrations version)
+          echo "::set-output name=current_version::$current_version"
 
-          
-    
-
-
-
-          
-
-
-
-
-
-
-
-              
+      - name: Run Migrations
+        run: |
+          current_version="${{ steps.get_db_version.outputs.current_version }}"
+          migrate -database "postgres://postgres@localhost:5432/temp_inventory?sslmode=disable" -path ./db/migrations goto "$current_version"
+          migrate -database "postgres://postgres@localhost:5432/temp_inventory?sslmode=disable" -path ./db/migrations up
