@@ -8,7 +8,9 @@ on:
 jobs:
   migrate_db:
     runs-on: ubuntu-latest
-
+    env:
+      PGPASSWORD: 12345
+  
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
