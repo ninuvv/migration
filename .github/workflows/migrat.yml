@@ -9,23 +9,7 @@ jobs:
   migrate_db:
     runs-on: ubuntu-latest
 
-    services:
-      postgres:
-        image: postgres:12
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: 12345
-          POSTGRES_DB: Inventorynew
-          POSTGRES_HOST: localhost
-          POSTGRES_PORT: 5432
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-        ports:
-          # Maps tcp port 5432 on service container to the host
-          - 5432:5432
+
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
@@ -54,7 +38,7 @@ jobs:
         run: |         
           migrate -database "postgres://postgres@127.0.0.1:5432/temp_inventory?sslmode=disable" -path ./db/migrations up
 
-          
+
    
      
 
