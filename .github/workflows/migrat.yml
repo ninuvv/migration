@@ -49,11 +49,13 @@ jobs:
 
 
       - name: Run Migrations
+        env:
+         PGPASSWORD: 12345
         run: |         
           migrate -database "postgres://postgres@127.0.0.1:5432/temp_inventory?sslmode=disable" -path ./db/migrations up
 
           
-
+          
    
      
 
