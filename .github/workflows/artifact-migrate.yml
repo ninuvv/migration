@@ -13,7 +13,7 @@ jobs:
         postgres:
           image: postgres:12
           env:
-            POSTGRES_USER: onito_inv_user
+            POSTGRES_USER: postgres
             POSTGRES_PASSWORD: 12345
             POSTGRES_DB: Inventory
             POSTGRES_HOST: localhost
