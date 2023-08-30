@@ -1,0 +1,44 @@
+name: Save Database Dump
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  save-db-dump:
+    runs-on: ubuntu-latest
+
+    services:
+        postgres:
+          image: postgres:12
+          env:
+            POSTGRES_USER: postgres
+            POSTGRES_PASSWORD: 12345
+            POSTGRES_DB: Inventorynew
+            POSTGRES_HOST: localhost
+            POSTGRES_PORT: 5432
+          options: >-
+            --health-cmd pg_isready
+            --health-interval 10s
+            --health-timeout 5s
+            --health-retries 5
+          ports:
+            # Maps tcp port 5432 on service container to the host
+            - 5432:5432
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+    
+      - name: Generate Database Dump
+        run: |
+          # Generate the database dump
+          pg_dump -h localhost -U postgres  -d Inventorynew -f mydb_dump.sql
+
+      - name: Save Database Dump as Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: db-dump
+          path: mydb_dump.sql
