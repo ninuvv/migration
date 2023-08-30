@@ -15,7 +15,7 @@ jobs:
           env:
             POSTGRES_USER: postgres
             POSTGRES_PASSWORD: 12345
-            POSTGRES_DB: Inventorynew
+            POSTGRES_DB: Inventory
             POSTGRES_HOST: localhost
             POSTGRES_PORT: 5432
           options: >-
