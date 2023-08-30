@@ -1,0 +1,62 @@
+name: Create Database from Artifact Dump and Apply Migrations
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  create-db-and-migrate:
+    runs-on: ubuntu-latest
+
+    services:
+        postgres:
+          image: postgres:12
+          env:
+            POSTGRES_USER: onito_inv_user
+            POSTGRES_PASSWORD: 12345
+            POSTGRES_DB: Inventory
+            POSTGRES_HOST: localhost
+            POSTGRES_PORT: 5432
+          options: >-
+            --health-cmd pg_isready
+            --health-interval 10s
+            --health-timeout 5s
+            --health-retries 5
+          ports:     
+            - 5432:5432
+            
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+     
+
+      - name: Create New Database
+        run: |
+          # Create a new database
+          psql -h localhost -U postgres -c "CREATE DATABASE newdb;"
+
+      - name: Download Database Dump Artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: db-dump
+          path: dump/
+
+      - name: Restore Dump to New Database
+        run: |
+          # Restore the dump to the newly created database
+          psql -h localhost -U postgres -d newdb -f dump/mydb_dump.sql
+
+      - name: Install Golang Migrate
+        run: |
+            go install -tags 'postgres' github.com/golang-migrate/migrate/v4/cmd/migrate@latest
+  
+
+      - name: Run Migrations
+        env:
+            PGPASSWORD: 12345
+        run: |         
+          migrate -database "postgres://onito_inv_user@localhost:5432/temp_inventory?sslmode=disable" -path ./db/migrations up
+    
+              
