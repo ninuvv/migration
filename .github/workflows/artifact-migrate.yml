@@ -74,6 +74,6 @@ jobs:
         env:
             PGPASSWORD: 12345
         run: |         
-          migrate -database "postgres://onito_inv_user@localhost:5432/temp_inventory?sslmode=disable" -path ./db/migrations up
+          migrate -database "postgres://postgres@localhost:5432/temp_inventory?sslmode=disable" -path ./db/migrations up
     
               
