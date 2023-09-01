@@ -33,10 +33,14 @@ jobs:
           ref: main  # Checkout the production branch
   
       - name: Create Template Database
+        env:
+          PGPASSWORD: 12345
         run: |        
           createdb -h localhost -U postgres temp_db
   
       - name: Restore Production Backup to Template Database
+        env:
+          PGPASSWORD: 12345  
         run: |
             # Replace <dump_file.sql> with the path to your production dump file
             psql -h localhost -U posthres -d temp_db < ./testdump.dump
