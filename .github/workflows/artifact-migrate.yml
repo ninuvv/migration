@@ -29,41 +29,19 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-
-     
-      - name: Generate Database Dump
-        env:
-          PGPASSWORD: 12345
-        run: |
-          # Generate the database dump
-          pg_dump -h localhost -U postgres  -d Inventory -f mydb_dump.sql
-
-      - name: Save Database Dump as Artifact
-        uses: actions/upload-artifact@v2
         with:
-          name: db-dump
-          path: mydb_dump.sql
-
-
-      - name: Create New Database
-        env:
-            PGPASSWORD: 12345
+          ref: main  # Checkout the production branch
+  
+      - name: Create Template Database
+        run: |        
+          createdb -h localhost -U postgres temp_db
+  
+      - name: Restore Production Backup to Template Database
         run: |
-          # Create a new database
-          psql -h localhost -U postgres -c "CREATE DATABASE newdb;"
-
-      - name: Download Database Dump Artifact
-        uses: actions/download-artifact@v2
-        with:
-          name: db-dump
-          path: dump/
-
-      - name: Restore Dump to New Database
-        env:
-            PGPASSWORD: 12345
-        run: |
-          # Restore the dump to the newly created database
-          psql -h localhost -U postgres -d newdb -f dump/mydb_dump.sql
+            # Replace <dump_file.sql> with the path to your production dump file
+            psql -h localhost -U posthres -d temp_db < ./testdump.dump
+  
+    
 
       - name: Install Golang Migrate
         run: |
@@ -75,5 +53,5 @@ jobs:
         env:
           PGPASSWORD: 12345
         run: |         
-          migrate -database "postgres://postgres@127.0.0.1:5432/newdb?sslmode=disable" -path ./db/migrations up
+          migrate -database "postgres://postgres@127.0.0.1:5432/temp_db?sslmode=disable" -path ./db/migrations up
     
