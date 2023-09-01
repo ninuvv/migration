@@ -1,4 +1,4 @@
-name: Create Database from Artifact Dump and Apply Migrations
+name: Create Database from production Dump and Apply Migrations
 
 on:
   push:
@@ -43,7 +43,7 @@ jobs:
           PGPASSWORD: 12345  
         run: |
             # Replace <dump_file.sql> with the path to your production dump file
-            psql -h localhost -U posthres -d temp_db < ./testdump.dump
+            psql -h localhost -U postgres -d temp_db < ./testdump.dump
   
     
 
