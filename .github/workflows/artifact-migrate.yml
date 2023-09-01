@@ -52,10 +52,8 @@ jobs:
         run: |
           wget https://github.com/golang-migrate/migrate/releases/download/v4.15.0/migrate.linux-amd64.tar.gz
           tar xvzf migrate.linux-amd64.tar.gz
-          chmod +x migrate.linux-amd64
-          mv migrate.linux-amd64 migrate
-          sudo mv migrate /usr/local/bin/
-          rm migrate.linux-amd64.tar.gz
+          sudo mv migrate.linux-amd64/migrate /usr/local/bin/
+          rm -f migrate.linux-amd64.tar.gz
   
 
 
