@@ -48,7 +48,11 @@ jobs:
         run: |
             go install -tags 'postgres' github.com/golang-migrate/migrate/v4/cmd/migrate@latest
 
+      - name: Add Go Bin Directory to PATH
+        run: |
+          echo "$HOME/go/bin" >> $GITHUB_PATH  # Add the directory where Go installs binaries to the PATH
 
+              
       - name: Run Migrations
         env:
           PGPASSWORD: 12345
