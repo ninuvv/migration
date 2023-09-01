@@ -14,7 +14,7 @@ jobs:
           image: postgres:12
           env:
             POSTGRES_USER: postgres
-            POSTGRES_PASSWORD: 555
+            POSTGRES_PASSWORD: 12345
             POSTGRES_DB: Inventorynew
             POSTGRES_HOST: localhost
             POSTGRES_PORT: 5432
@@ -43,14 +43,19 @@ jobs:
           PGPASSWORD: 12345  
         run: |          
             pg_restore -h localhost -U postgres -d temp_db < ./testdump.dump
+
+      - name: Set Up Go
+        uses: actions/setup-go@v3
+        with:
+          go-version: 1.18        
   
       - name: Install Golang Migrate
         run: |
             go install -tags 'postgres' github.com/golang-migrate/migrate/v4/cmd/migrate@latest
 
-      - name: Add Go Bin Directory to PATH
-        run: |
-          echo "$HOME/go/bin" >> $GITHUB_PATH  # Add the directory where Go installs binaries to the PATH
+      # - name: Add Go Bin Directory to PATH
+      #   run: |
+      #     echo "$HOME/go/bin" >> $GITHUB_PATH  # Add the directory where Go installs binaries to the PATH
 
               
       - name: Run Migrations
