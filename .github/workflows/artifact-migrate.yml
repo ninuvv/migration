@@ -44,13 +44,18 @@ jobs:
         run: |          
             pg_restore -h localhost -U postgres -d temp_db < ./testdump.dump
   
-    
+      # - name: Install Golang Migrate
+      #   run: |
+      #       go install -tags 'postgres' github.com/golang-migrate/migrate/v4/cmd/migrate@latest
+
       - name: Install golang-migrate
         run: |
-              wget https://github.com/golang-migrate/migrate/releases/download/v4.15.0/migrate.linux-amd64.tar.gz
-              tar xvzf migrate.linux-amd64.tar.gz
-              mv migrate.linux-amd64/migrate /usr/local/bin/
-              rm -rf migrate.linux-amd64/ migrate.linux-amd64.tar.gz
+          wget https://github.com/golang-migrate/migrate/releases/download/v4.15.0/migrate.linux-amd64.tar.gz
+          tar xvzf migrate.linux-amd64.tar.gz
+          chmod +x migrate.linux-amd64
+          mv migrate.linux-amd64 migrate
+          sudo mv migrate /usr/local/bin/
+          rm migrate.linux-amd64.tar.gz
   
 
 
