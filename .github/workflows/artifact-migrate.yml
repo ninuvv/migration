@@ -64,4 +64,4 @@ jobs:
         env:
             PGPASSWORD: 12345
         run: |
-            psql -h localhost -U postgres -d temp_db -c "SELECT * from users;"
+            psql -h localhost -U postgres -d temp_db -c "SELECT * from employee;"
