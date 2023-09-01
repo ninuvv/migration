@@ -15,7 +15,7 @@ jobs:
           env:
             POSTGRES_USER: postgres
             POSTGRES_PASSWORD: 12345
-            POSTGRES_DB: temp_db
+            POSTGRES_DB: Inventory
             POSTGRES_HOST: localhost
             POSTGRES_PORT: 5432
           options: >-
@@ -60,3 +60,8 @@ jobs:
         run: |         
           migrate -database "postgres://postgres@127.0.0.1:5432/temp_db?sslmode=disable" -path ./db/migrations up
     
+      - name: Connect to Database
+        env:
+            PGPASSWORD: 12345
+        run: |
+            psql -h localhost -U postgres -d temp_db -c "SELECT 'Connected to database';"
