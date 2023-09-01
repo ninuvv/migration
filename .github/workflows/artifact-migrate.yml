@@ -41,9 +41,8 @@ jobs:
       - name: Restore Production Backup to Template Database
         env:
           PGPASSWORD: 12345  
-        run: |
-            # Replace <dump_file.sql> with the path to your production dump file
-            psql -h localhost -U postgres -d temp_db < ./testdump.dump
+        run: |          
+            pg_restore -h localhost -U postgres -d temp_db < ./testdump.dump
   
     
 
